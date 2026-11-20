@@ -1,0 +1,10 @@
+const r = require('express').Router();
+const c = require('../controllers/authController');
+const protect = require('../middleware/auth');
+r.post('/register', c.register);
+r.post('/login', c.login);
+r.get('/me', protect, c.me);
+r.put('/profile', protect, c.updateProfile);
+r.put('/password', protect, c.changePassword);
+r.delete('/account', protect, c.deleteAccount);
+module.exports = r;

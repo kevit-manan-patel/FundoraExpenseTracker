@@ -1,0 +1,55 @@
+/** @type {import('tailwindcss').Config} */
+export default {
+  content: ['./index.html', './src/**/*.{js,jsx}'],
+  darkMode: ['class', '.dark'],
+  theme: {
+    extend: {
+      fontFamily: { sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'] },
+      colors: {
+        ink: 'var(--c-ink)',
+        side: 'var(--c-side)',
+        card: 'var(--c-card)',
+        card2: 'var(--c-card2)',
+        line: 'var(--c-line)',
+        muted: 'var(--c-muted)',
+        text: 'var(--c-text)',
+        pos: 'var(--c-pos)',
+        neg: 'var(--c-neg)',
+        warn: 'var(--c-warn)',
+        neon: {
+          green: '#B6FF4A',
+          emerald: '#00E5A0',
+          cyan: '#00E5FF',
+          purple: '#A855F7',
+          pink: '#FF4FD8',
+          amber: '#FFC857',
+          red: '#FF5C70',
+        },
+      },
+      boxShadow: {
+        'glow-green': '0 0 1px rgba(182,255,74,.4), 0 4px 24px -4px rgba(182,255,74,.35)',
+        'glow-emerald': '0 0 1px rgba(0,229,160,.4), 0 4px 24px -4px rgba(0,229,160,.35)',
+        'glow-cyan': '0 0 1px rgba(0,229,255,.4), 0 4px 24px -4px rgba(0,229,255,.35)',
+        'glow-purple': '0 0 1px rgba(168,85,247,.4), 0 4px 24px -4px rgba(168,85,247,.35)',
+        'glow-pink': '0 0 1px rgba(255,79,216,.4), 0 4px 24px -4px rgba(255,79,216,.35)',
+        'glow-amber': '0 0 1px rgba(255,200,87,.4), 0 4px 24px -4px rgba(255,200,87,.35)',
+        'glow-red': '0 0 1px rgba(255,92,112,.4), 0 4px 24px -4px rgba(255,92,112,.35)',
+        'glow-soft': '0 8px 30px -8px rgba(0,0,0,.6)',
+        'card-dark': '0 1px 0 rgba(255,255,255,.04) inset, 0 20px 40px -24px rgba(0,0,0,.8)',
+      },
+      keyframes: {
+        fadeUp: { '0%': { opacity: 0, transform: 'translateY(10px)' }, '100%': { opacity: 1, transform: 'none' } },
+        glowPulse: { '0%,100%': { opacity: 1 }, '50%': { opacity: .55 } },
+        drawLine: { '0%': { strokeDashoffset: 1000 }, '100%': { strokeDashoffset: 0 } },
+        shimmer: { '0%': { backgroundPosition: '-200% 0' }, '100%': { backgroundPosition: '200% 0' } },
+      },
+      animation: {
+        fadeUp: 'fadeUp .4s cubic-bezier(.16,1,.3,1) both',
+        glowPulse: 'glowPulse 2.4s ease-in-out infinite',
+        shimmer: 'shimmer 2.4s linear infinite',
+      },
+      backdropBlur: { xs: '2px' },
+    },
+  },
+  plugins: [],
+};
