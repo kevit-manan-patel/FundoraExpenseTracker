@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import toast from 'react-hot-toast';
-import { Upload, LogOut, Trash2 } from 'lucide-react';
+import { Upload, LogOut, Trash2, Eye, EyeOff } from 'lucide-react';
 import api, { errMsg } from '../api';
 import { useAuth } from '../context/AuthContext.jsx';
 import { Avatar } from '../components/Layout.jsx';
@@ -15,12 +15,27 @@ const Toggle = ({ on, onChange, label, hint }) => (
     <button type="button" onClick={() => onChange(!on)} className={`relative h-6 w-11 rounded-full transition-colors ${on ? 'bg-pos' : 'bg-line'}`}><span className={`absolute top-0.5 h-5 w-5 rounded-full bg-white transition-all ${on ? 'left-[22px]' : 'left-0.5'}`} /></button></div>
 );
 
+function PasswordField({ label, value, onChange, visible, onToggle, autoComplete }) {
+  return (
+    <div>
+      <label className="label">{label}</label>
+      <div className="relative">
+        <input className="input pr-11" type={visible ? 'text' : 'password'} autoComplete={autoComplete} value={value} onChange={onChange} />
+        <button type="button" className="icon-btn absolute right-1 top-1/2 -translate-y-1/2" onClick={onToggle} aria-label={`${visible ? 'Hide' : 'Show'} ${label.toLowerCase()} password`} title={visible ? 'Hide password' : 'Show password'}>
+          {visible ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+        </button>
+      </div>
+    </div>
+  );
+}
+
 export default function Settings() {
   const { user, setUser, logout } = useAuth();
   const [p, setP] = useState({ name: user.name, email: user.email, avatar: user.avatar || '' });
   const [currency, setCurrency] = useState(user.currency);
   const [notif, setNotif] = useState(user.notifications);
   const [pw, setPw] = useState({ currentPassword: '', newPassword: '', confirm: '' });
+  const [passwordVisibility, setPasswordVisibility] = useState({ current: false, new: false, confirm: false });
   const [busy, setBusy] = useState('');
   const [delPw, setDelPw] = useState('');
 
@@ -48,6 +63,7 @@ export default function Settings() {
     setBusy('pw');
     try { await api.put('/auth/password', { currentPassword: pw.currentPassword, newPassword: pw.newPassword }); toast.success('Password updated'); setPw({ currentPassword: '', newPassword: '', confirm: '' }); } catch (err) { toast.error(errMsg(err)); } finally { setBusy(''); }
   };
+  const togglePasswordVisibility = (field) => setPasswordVisibility((visibility) => ({ ...visibility, [field]: !visibility[field] }));
 
   const deleteAccount = async () => {
     if (!delPw) return toast.error('Enter your password to confirm');
@@ -89,9 +105,9 @@ export default function Settings() {
 
         <Section title="Change password">
           <form onSubmit={changePw} className="grid gap-4 sm:grid-cols-3">
-            <div><label className="label">Current</label><input className="input" type="password" value={pw.currentPassword} onChange={(e) => setPw({ ...pw, currentPassword: e.target.value })} /></div>
-            <div><label className="label">New</label><input className="input" type="password" value={pw.newPassword} onChange={(e) => setPw({ ...pw, newPassword: e.target.value })} /></div>
-            <div><label className="label">Confirm</label><input className="input" type="password" value={pw.confirm} onChange={(e) => setPw({ ...pw, confirm: e.target.value })} /></div>
+            <PasswordField label="Current" value={pw.currentPassword} onChange={(e) => setPw({ ...pw, currentPassword: e.target.value })} visible={passwordVisibility.current} onToggle={() => togglePasswordVisibility('current')} autoComplete="current-password" />
+            <PasswordField label="New" value={pw.newPassword} onChange={(e) => setPw({ ...pw, newPassword: e.target.value })} visible={passwordVisibility.new} onToggle={() => togglePasswordVisibility('new')} autoComplete="new-password" />
+            <PasswordField label="Confirm" value={pw.confirm} onChange={(e) => setPw({ ...pw, confirm: e.target.value })} visible={passwordVisibility.confirm} onToggle={() => togglePasswordVisibility('confirm')} autoComplete="new-password" />
             <div className="sm:col-span-3 flex justify-end"><Button type="submit" loading={busy === 'pw'}>Update password</Button></div>
           </form>
         </Section>

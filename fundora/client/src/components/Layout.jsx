@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState, useCallback } from 'react';
+import { createContext, useContext, useEffect, useState, useCallback, useRef } from 'react';
 import { Outlet, NavLink, useNavigate, useLocation, useSearchParams } from 'react-router-dom';
 import { LayoutDashboard, ArrowLeftRight, BarChart3, PiggyBank, Target, Repeat, CreditCard, Sparkles, FileText, Settings, CalendarDays, Activity, LogOut, Bell, Search, Plus, ChevronsLeft, ChevronsRight, Menu } from 'lucide-react';
 import { useAuth } from '../context/AuthContext.jsx';
@@ -7,6 +7,7 @@ import TransactionModal from './TransactionModal.jsx';
 import api from '../api';
 import { fmtDate } from '../utils/format';
 import BrandMark from './BrandMark.jsx';
+import EclipticBackdrop from './EclipticBackdrop.jsx';
 
 const AppCtx = createContext(null);
 export const useApp = () => useContext(AppCtx);
@@ -36,9 +37,18 @@ export default function Layout() {
   const [alerts, setAlerts] = useState([]);
   const [bell, setBell] = useState(false);
   const [q, setQ] = useState(params.get('q') || '');
+  const mainRef = useRef(null);
 
   const refresh = useCallback(() => setRefreshKey((k) => k + 1), []);
   const openTxn = useCallback((initial = {}) => setTxnModal(initial), []);
+  const goHome = useCallback(() => {
+    nav('/');
+    mainRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [nav]);
+  const openProfile = useCallback(() => {
+    nav('/settings');
+    mainRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [nav]);
 
   useEffect(() => { localStorage.setItem('fundora_collapsed', collapsed ? '1' : '0'); }, [collapsed]);
   useEffect(() => { setMobile(false); setBell(false); if (loc.pathname !== '/transactions') setQ(''); }, [loc.pathname]);
@@ -70,8 +80,10 @@ export default function Layout() {
         <aside className={`sidebar-shell fixed inset-y-0 left-0 z-40 flex w-64 flex-col border-r border-line transition-all duration-300 lg:static ${w} ${mobile ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}>
           <div className="flex h-16 items-center justify-between px-4">
             <div className="flex items-center gap-2.5 overflow-hidden">
-              <BrandMark />
-              {!collapsed && <span className="text-[15px] font-semibold tracking-tight text-glow-green">Fundora</span>}
+              <button type="button" className="flex cursor-pointer items-center gap-2.5 text-left" onClick={goHome} aria-label="Go to Overview">
+                <BrandMark />
+                {!collapsed && <span className="text-[15px] font-semibold tracking-tight text-glow-green">Fundora</span>}
+              </button>
             </div>
             <button className="icon-btn hidden lg:inline-flex" onClick={() => setCollapsed(!collapsed)} aria-label="Toggle sidebar">
               {collapsed ? <ChevronsRight className="h-4 w-4" /> : <ChevronsLeft className="h-4 w-4" />}
@@ -90,13 +102,16 @@ export default function Layout() {
             ))}
           </nav>
           <div className="border-t border-line p-3">
-            <div className={`flex items-center gap-3 rounded-xl p-2 ${collapsed ? 'justify-center' : ''}`}>
+            <button type="button" className={`flex w-full cursor-pointer items-center gap-3 rounded-xl p-2 text-left transition-colors hover:bg-card2 ${collapsed ? 'justify-center' : ''}`} onClick={openProfile} aria-label={`Open profile settings for ${user.name}`}>
               <Avatar user={user} size="h-9 w-9" />
               {!collapsed && <div className="min-w-0 flex-1"><p className="truncate text-sm font-medium">{user.name}</p><p className="truncate text-xs text-muted">{user.email}</p></div>}
-            </div>
-            <div className={`mt-1 flex ${collapsed ? 'flex-col' : ''} gap-1`}>
+            </button>
+            <div className={`mt-1 flex ${collapsed ? 'flex-col' : 'items-center'} gap-1`}>
               <button className="icon-btn" title="Account settings" onClick={() => nav('/settings')}><Settings className="h-4 w-4" /></button>
-              <button className="icon-btn hover:!text-neg" title="Log out" onClick={() => { logout(); nav('/login'); }}><LogOut className="h-4 w-4" /></button>
+              <button className={`${collapsed ? 'icon-btn' : 'btn-ghost !h-9 !px-3 !py-2 !text-xs'} hover:!text-neg`} title="Log out" aria-label="Log out" onClick={() => { logout(); nav('/login'); }}>
+                <LogOut className="h-4 w-4" />
+                {!collapsed && 'Log out'}
+              </button>
             </div>
           </div>
         </aside>
@@ -131,9 +146,14 @@ export default function Layout() {
             </div>
             <button className="btn-primary hidden sm:inline-flex" onClick={() => openTxn({})}><Plus className="h-4 w-4" />Add Transaction<kbd className="ml-1 rounded bg-black/10 px-1.5 text-[10px]">N</kbd></button>
             <button className="btn-primary !px-3 sm:hidden" onClick={() => openTxn({})} aria-label="Add"><Plus className="h-4 w-4" /></button>
-            <Avatar user={user} />
+            <button type="button" className="cursor-pointer rounded-full transition-transform duration-200 hover:scale-105" onClick={openProfile} aria-label="Open profile settings" title="Profile settings">
+              <Avatar user={user} />
+            </button>
           </header>
-          <main className="flex-1 overflow-y-auto px-4 py-6 lg:px-8"><div className="mx-auto max-w-[1400px]"><Outlet /></div></main>
+          <main ref={mainRef} className="main-stage relative isolate flex-1 overflow-y-auto px-4 py-6 lg:px-8">
+            <EclipticBackdrop />
+            <div className="relative z-10 mx-auto max-w-[1400px]"><Outlet /></div>
+          </main>
         </div>
       </div>
       {txnModal && <TransactionModal initial={txnModal} onClose={() => setTxnModal(null)} onSaved={refresh} />}

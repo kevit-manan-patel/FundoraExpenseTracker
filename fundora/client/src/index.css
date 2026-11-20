@@ -47,10 +47,83 @@ html.light {
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { animation-duration: .001ms !important; transition-duration: .001ms !important; }
     .sidebar-shell, .app-header { animation: none !important; }
+    .ecliptic-art--orbit, .ecliptic-star { animation: none !important; }
   }
 }
 
 @layer components {
+  .ecliptic-scene {
+    position: absolute;
+    z-index: 0;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+  .ecliptic-art {
+    position: absolute;
+    display: block;
+    object-fit: cover;
+    mix-blend-mode: screen;
+    pointer-events: none;
+  }
+  .ecliptic-art--orbit {
+    top: 50%;
+    left: 50%;
+    width: min(65vw, 780px);
+    height: min(74vh, 650px);
+    border-radius: 44%;
+    filter: brightness(.9) drop-shadow(0 0 18px rgba(120,91,255,.3));
+    opacity: .34;
+    transform: translate(-50%, -50%) rotate(-16deg);
+    transition: filter .5s ease, opacity .5s ease, transform .6s ease;
+    animation: ecliptic-drift 32s ease-in-out infinite alternate;
+  }
+  .ecliptic-art--gradient {
+    top: 7%;
+    left: 4%;
+    width: min(36vw, 460px);
+    height: min(26vh, 220px);
+    filter: blur(1px);
+    opacity: .16;
+  }
+  .ecliptic-art--glass {
+    right: 4%;
+    bottom: 5%;
+    width: min(30vw, 380px);
+    height: min(27vh, 230px);
+    filter: blur(1px);
+    opacity: .13;
+  }
+  .ecliptic-star {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    border-radius: 50%;
+    background: #d7c7ff;
+    box-shadow: 0 0 7px 2px rgba(166,132,255,.48);
+    animation: star-twinkle 3s ease-in-out infinite alternate;
+  }
+  .ecliptic-star--one { top: 8%; left: 12%; }
+  .ecliptic-star--two { top: 16%; right: 9%; animation-delay: -1s; }
+  .ecliptic-star--three { top: 36%; left: 5%; animation-delay: -2s; }
+  .ecliptic-star--four { top: 29%; right: 6%; width: 3px; height: 3px; background: #a6d9ff; }
+  .ecliptic-star--five { right: 14%; bottom: 13%; animation-delay: -1.6s; }
+  .ecliptic-star--six { bottom: 9%; left: 18%; width: 3px; height: 3px; background: #ffd2ad; animation-delay: -.6s; }
+  .ecliptic-star--seven { top: 62%; left: 8%; animation-delay: -2.3s; }
+  .ecliptic-star--eight { top: 74%; right: 7%; animation-delay: -.4s; }
+  .main-stage:hover .ecliptic-art--orbit {
+    filter: brightness(1.15) drop-shadow(0 0 26px rgba(145,111,255,.62));
+    opacity: .48;
+  }
+  .main-stage:hover .ecliptic-star { box-shadow: 0 0 9px 3px rgba(166,132,255,.7); }
+  @media (max-width: 640px) {
+    .ecliptic-art--orbit { width: 88vw; height: 68vh; opacity: .24; }
+    .ecliptic-art--gradient { top: 3%; left: 2%; width: 48vw; height: 16vh; opacity: .12; }
+    .ecliptic-art--glass { right: 2%; bottom: 2%; width: 42vw; height: 18vh; opacity: .1; }
+    .ecliptic-star--one, .ecliptic-star--three, .ecliptic-star--six, .ecliptic-star--seven { left: 4%; }
+    .ecliptic-star--two, .ecliptic-star--four, .ecliptic-star--five, .ecliptic-star--eight { right: 4%; }
+  }
+
   .card { @apply relative rounded-2xl border border-line bg-card transition-all duration-300; box-shadow: 0 1px 0 rgba(255,255,255,.03) inset, 0 16px 36px -28px rgba(0,0,0,.85); }
   .card:hover { border-color: var(--c-line-strong); background: color-mix(in srgb, var(--c-card) 94%, var(--c-card-hover)); transform: perspective(1000px) translateY(-2px) translateZ(6px) rotateX(.35deg); }
   .card-flat { @apply rounded-xl border border-line bg-card2; }
@@ -112,6 +185,14 @@ html.light {
   @keyframes header-spectrum {
     from { background-position: 0% 50%; }
     to { background-position: 100% 50%; }
+  }
+  @keyframes ecliptic-drift {
+    from { transform: translate(-50%, -50%) rotate(-16deg) scale(.98); }
+    to { transform: translate(-50%, -50%) rotate(-8deg) scale(1.02); }
+  }
+  @keyframes star-twinkle {
+    from { opacity: .25; transform: scale(.75); }
+    to { opacity: .9; transform: scale(1.2); }
   }
   .btn { @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2 text-sm font-medium transition-all duration-150 select-none cursor-pointer active:scale-[.97] disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100; }
   .btn-primary { @apply btn text-black; background: linear-gradient(135deg, #b6ff4a, #6ee7a3); box-shadow: 0 0 0 1px rgba(182,255,74,.25) inset, 0 6px 20px -6px rgba(182,255,74,.55); }
