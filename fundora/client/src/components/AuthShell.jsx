@@ -1,9 +1,11 @@
 import { TrendingUp, ShieldCheck, Sparkles } from 'lucide-react';
 import BrandMark from './BrandMark.jsx';
+import ThemeToggle from './ThemeToggle.jsx';
 
 export default function AuthShell({ title, subtitle, children, footer }) {
   return (
-    <div className="grid min-h-full bg-ink lg:grid-cols-2">
+    <div className="auth-surface relative grid min-h-full bg-ink lg:grid-cols-2">
+      <div className="auth-theme-control"><ThemeToggle /></div>
       <div className="relative hidden flex-col justify-between overflow-hidden border-r border-line bg-side p-12 lg:flex">
         <div className="dot-grid pointer-events-none absolute inset-0 opacity-30" />
         <div className="pointer-events-none absolute -left-24 -top-24 h-72 w-72 rounded-full bg-neon-green/20 blur-3xl" />

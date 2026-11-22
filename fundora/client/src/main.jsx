@@ -9,13 +9,13 @@ import './index.css';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <ThemeProvider>
-      <BrowserRouter>
-        <AuthProvider>
+    <BrowserRouter>
+      <AuthProvider>
+        <ThemeProvider>
           <App />
           <Toaster position="bottom-right" toastOptions={{ style: { background: 'var(--c-card2)', color: 'var(--c-text)', border: '1px solid var(--c-line)', fontSize: '14px' } }} />
-        </AuthProvider>
-      </BrowserRouter>
-    </ThemeProvider>
+        </ThemeProvider>
+      </AuthProvider>
+    </BrowserRouter>
   </React.StrictMode>
 );

@@ -98,7 +98,7 @@ export function StatCard({ label, value, change, goodWhenUp = true, suffix, icon
 }
 
 export const chartTooltip = {
-  contentStyle: { background: 'var(--c-card2)', border: '1px solid var(--c-line)', borderRadius: 12, fontSize: 12, color: 'var(--c-text)', boxShadow: '0 12px 30px -10px rgba(0,0,0,.6)' },
+  contentStyle: { background: 'var(--c-card2)', border: '1px solid var(--c-line)', borderRadius: 12, fontSize: 12, color: 'var(--c-text)', boxShadow: '0 12px 30px -10px var(--c-shadow)' },
   itemStyle: { color: 'var(--c-text)' },
   labelStyle: { color: 'var(--c-muted)' },
   cursor: { fill: 'rgba(0,229,255,.05)' },

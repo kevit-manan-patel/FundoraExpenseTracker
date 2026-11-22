@@ -61,7 +61,7 @@ export default function Calendar() {
               const sel = k === selected;
               return (
                 <button key={k} onClick={() => setSelected(k)}
-                  className={`${view === 'week' ? 'min-h-40' : 'min-h-[92px]'} flex flex-col items-stretch gap-1 border-b border-r border-line/60 p-1.5 text-left transition-colors hover:bg-card2 sm:p-2 ${sel ? 'bg-card2 ring-1 ring-inset ring-white/40' : ''} ${outside ? 'opacity-35' : ''}`}>
+                  className={`${view === 'week' ? 'min-h-40' : 'min-h-[92px]'} flex flex-col items-stretch gap-1 border-b border-r border-line/60 p-1.5 text-left transition-colors hover:bg-card2 sm:p-2 ${sel ? 'bg-card2 ring-1 ring-inset ring-[var(--c-line-strong)]' : ''} ${outside ? 'opacity-35' : ''}`}>
                   <span className={`grid h-6 w-6 place-items-center rounded-full text-xs ${k === today ? 'bg-gradient-to-br from-neon-green to-neon-emerald font-semibold text-black shadow-glow-green' : 'text-muted'}`}>{d.getDate()}</span>
                   {info?.income > 0 && <span className="truncate text-[10px] font-medium text-pos sm:text-[11px]">+{compact(info.income, c)}</span>}
                   {info?.expense > 0 && <span className="truncate text-[10px] text-neg sm:text-[11px]">−{compact(info.expense, c)}</span>}

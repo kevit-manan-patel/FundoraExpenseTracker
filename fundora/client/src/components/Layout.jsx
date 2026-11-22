@@ -2,12 +2,14 @@ import { createContext, useContext, useEffect, useState, useCallback, useRef } f
 import { Outlet, NavLink, useNavigate, useLocation, useSearchParams } from 'react-router-dom';
 import { LayoutDashboard, ArrowLeftRight, BarChart3, PiggyBank, Target, Repeat, CreditCard, Sparkles, FileText, Settings, CalendarDays, Activity, LogOut, Bell, Search, Plus, ChevronsLeft, ChevronsRight, Menu } from 'lucide-react';
 import { useAuth } from '../context/AuthContext.jsx';
-import { ThemeToggle } from './Glow.jsx';
 import TransactionModal from './TransactionModal.jsx';
 import api from '../api';
 import { fmtDate } from '../utils/format';
 import BrandMark from './BrandMark.jsx';
 import EclipticBackdrop from './EclipticBackdrop.jsx';
+import ThemeToggle from './ThemeToggle.jsx';
+import HalfMoon from './HalfMoon.jsx';
+import CursorTwinkle from './CursorTwinkle.jsx';
 
 const AppCtx = createContext(null);
 export const useApp = () => useContext(AppCtx);
@@ -76,7 +78,7 @@ export default function Layout() {
   return (
     <AppCtx.Provider value={{ openTxn, refresh, refreshKey }}>
       <div className="flex h-full">
-        {mobile && <div className="fixed inset-0 z-30 bg-black/70 backdrop-blur-sm lg:hidden" onClick={() => setMobile(false)} />}
+        {mobile && <div className="mobile-nav-overlay fixed inset-0 z-30 backdrop-blur-sm lg:hidden" onClick={() => setMobile(false)} />}
         <aside className={`sidebar-shell fixed inset-y-0 left-0 z-40 flex w-64 flex-col border-r border-line transition-all duration-300 lg:static ${w} ${mobile ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}>
           <div className="flex h-16 items-center justify-between px-4">
             <div className="flex items-center gap-2.5 overflow-hidden">
@@ -132,7 +134,7 @@ export default function Layout() {
                 {alerts.length > 0 && <span className="absolute right-2 top-2 h-2 w-2 rounded-full bg-neon-green shadow-glow-green ring-2 ring-ink" />}
               </button>
               {bell && (
-                <div className="notification-panel animate-fadeUp absolute right-0 top-11 z-50 w-80 rounded-2xl border border-line p-2 shadow-5xl shadow-black">
+                <div className="notification-panel animate-fadeUp absolute right-0 top-11 z-50 w-80 rounded-2xl border border-line p-2 shadow-2xl">
                   <p className="eyebrow px-3 py-2">Notifications</p>
                   {alerts.length === 0 && <p className="px-3 pb-3 text-sm text-muted">You're all caught up.</p>}
                   {alerts.map((a, i) => (
@@ -157,6 +159,8 @@ export default function Layout() {
         </div>
       </div>
       {txnModal && <TransactionModal initial={txnModal} onClose={() => setTxnModal(null)} onSaved={refresh} />}
+      <HalfMoon />
+      <CursorTwinkle />
     </AppCtx.Provider>
   );
 }

@@ -45,7 +45,7 @@ export default function Insights() {
         <div className="card p-6 xl:col-span-2">
           <h3 className="mb-4 flex items-center gap-2 font-semibold"><Trophy className="h-4 w-4 text-pos" />Smart recommendations</h3>
           <div className="space-y-2">
-            {d.recommendations.map((r, i) => { const [I, tone] = LEVEL[r.level] || LEVEL.info; return <div key={i} className="card-flat flex items-start gap-3 p-4 transition-colors hover:border-[#363636]"><I className={`mt-0.5 h-4 w-4 shrink-0 ${tone}`} /><p className="text-sm">{r.text}</p></div>; })}
+            {d.recommendations.map((r, i) => { const [I, tone] = LEVEL[r.level] || LEVEL.info; return <div key={i} className="card-flat flex items-start gap-3 p-4 transition-colors hover:border-[var(--c-line-strong)]"><I className={`mt-0.5 h-4 w-4 shrink-0 ${tone}`} /><p className="text-sm">{r.text}</p></div>; })}
           </div>
         </div>
 

@@ -49,7 +49,7 @@ export default function Goals() {
           <div className="flex"><button className="icon-btn" onClick={() => setForm(g)}><Pencil className="h-4 w-4" /></button><button className="icon-btn hover:!text-neg" onClick={() => remove(g)}><Trash2 className="h-4 w-4" /></button></div>
         </div>
         <div className="mb-2 flex items-baseline justify-between"><span className="text-xl font-semibold">{money(g.currentAmount, c)}</span><span className="text-xs text-muted">of {money(g.targetAmount, c)}</span></div>
-        <Progress percent={pct} tone={pct >= 100 ? 'bg-pos' : 'bg-white'} />
+        <Progress percent={pct} tone={pct >= 100 ? 'pos' : undefined} />
         <div className="mt-3 flex items-center justify-between text-xs text-muted">
           <span>{Math.min(Math.round(pct), 100)}% · {pct >= 100 ? 'Goal reached' : `${money(g.targetAmount - g.currentAmount, c)} to go`}</span>
           {g.targetDate && <span>Due {fmtDate(g.targetDate, { month: 'short', year: 'numeric' })}</span>}

@@ -1,29 +1,3 @@
-import { Sun, Moon } from 'lucide-react';
-import { useTheme } from '../context/ThemeContext.jsx';
-
-/* Sun / moon theme switcher with a smooth sliding glow */
-export function ThemeToggle() {
-  const { theme, toggle } = useTheme();
-  const dark = theme === 'dark';
-  return (
-    <button
-      onClick={toggle}
-      aria-label="Toggle theme"
-      title={dark ? 'Switch to light mode' : 'Switch to dark mode'}
-      className="icon-btn relative overflow-hidden"
-    >
-      <span
-        className="absolute inset-0 rounded-lg opacity-0 transition-opacity duration-300"
-        style={{ background: dark ? 'radial-gradient(circle, rgba(0,229,255,.25), transparent 70%)' : 'radial-gradient(circle, rgba(255,200,87,.3), transparent 70%)' }}
-      />
-      <span className="relative grid h-[18px] w-[18px] place-items-center">
-        <Sun className={`absolute h-[18px] w-[18px] text-neon-amber transition-all duration-300 ${dark ? 'scale-0 -rotate-90 opacity-0' : 'scale-100 rotate-0 opacity-100'}`} />
-        <Moon className={`absolute h-[18px] w-[18px] text-neon-cyan transition-all duration-300 ${dark ? 'scale-100 rotate-0 opacity-100' : 'scale-0 rotate-90 opacity-0'}`} />
-      </span>
-    </button>
-  );
-}
-
 /* Segmented control used for range/view pickers across pages */
 export function Segmented({ value, onChange, options }) {
   return (
@@ -64,7 +38,7 @@ export function ProgressRing({ percent, size = 72, stroke = 7, color = 'green', 
 export function NeonTooltip({ active, payload, label, formatter }) {
   if (!active || !payload?.length) return null;
   return (
-    <div className="rounded-xl border border-line bg-card2/95 px-3 py-2 text-xs shadow-2xl shadow-black/60 backdrop-blur">
+    <div className="chart-tooltip rounded-xl border border-line bg-card2/95 px-3 py-2 text-xs shadow-2xl backdrop-blur">
       {label && <p className="mb-1 text-muted">{label}</p>}
       {payload.map((p, i) => (
         <div key={i} className="flex items-center gap-2 py-0.5">

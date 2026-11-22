@@ -12,7 +12,7 @@ function Section({ title, sub, children }) {
 }
 const Toggle = ({ on, onChange, label, hint }) => (
   <div className="flex items-center justify-between py-2"><div><p className="text-sm">{label}</p><p className="text-xs text-muted">{hint}</p></div>
-    <button type="button" onClick={() => onChange(!on)} className={`relative h-6 w-11 rounded-full transition-colors ${on ? 'bg-pos' : 'bg-line'}`}><span className={`absolute top-0.5 h-5 w-5 rounded-full bg-white transition-all ${on ? 'left-[22px]' : 'left-0.5'}`} /></button></div>
+    <button type="button" onClick={() => onChange(!on)} className={`relative h-6 w-11 rounded-full transition-colors ${on ? 'bg-pos' : 'bg-line'}`}><span className={`settings-toggle__knob absolute top-0.5 h-5 w-5 rounded-full border border-[var(--c-line-strong)] bg-card transition-all ${on ? 'left-[22px]' : 'left-0.5'}`} /></button></div>
 );
 
 function PasswordField({ label, value, onChange, visible, onToggle, autoComplete }) {
